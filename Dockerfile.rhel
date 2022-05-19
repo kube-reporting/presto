@@ -1,13 +1,13 @@
 FROM rhel7:7-released AS build
 
+ARG MAVEN_REPO_URL=file:///build/artifacts
 ENV PRESTO_VERSION 315.0
 ENV RH_PRESTO_PATCH_VERSION 00003
 ENV RH_PRESTO_VERSION ${PRESTO_VERSION}.0.redhat-${RH_PRESTO_PATCH_VERSION}
-ENV RH_PRESTO_BREW_DIR ${PRESTO_VERSION}.0.redhat_${RH_PRESTO_PATCH_VERSION}
 ENV PRESTO_SERVER_OUT /build/presto-server/target/presto-server-${PRESTO_VERSION}
 ENV PRESTO_CLI_OUT /build/presto-cli/target/presto-cli-${PRESTO_VERSION}-executable.jar
-ARG PRESTO_CLI_JAR_URL=http://download.eng.bos.redhat.com/brewroot/packages/io.prestosql-presto-root/${RH_PRESTO_BREW_DIR}/1/maven/io/prestosql/presto-cli/${RH_PRESTO_VERSION}/presto-cli-${RH_PRESTO_VERSION}-executable.jar
-ARG PRESTO_SERVER_URL=http://download.eng.bos.redhat.com/brewroot/packages/io.prestosql-presto-root/${RH_PRESTO_BREW_DIR}/1/maven/io/prestosql/presto-server/${RH_PRESTO_VERSION}/presto-server-${RH_PRESTO_VERSION}.tar.gz
+ARG PRESTO_CLI_JAR_URL=$MAVEN_REPO_URL/io/prestosql/presto-cli/${RH_PRESTO_VERSION}/presto-cli-${RH_PRESTO_VERSION}-executable.jar
+ARG PRESTO_SERVER_URL=$MAVEN_REPO_URL/io/prestosql/presto-server/${RH_PRESTO_VERSION}/presto-server-${RH_PRESTO_VERSION}.tar.gz
 
 RUN mkdir -p /build /build/presto-server/target /build/presto-cli/target
 RUN set -x; curl -fSLs \
@@ -25,9 +25,8 @@ RUN set -x; curl -fSLs \
 ENV PROMETHEUS_JMX_EXPORTER_VERSION 0.3.1
 ENV RH_PROMETHEUS_JMX_EXPORTER_PATCH_VERSION 00006
 ENV RH_PROMETHEUS_JMX_EXPORTER_VERSION ${PROMETHEUS_JMX_EXPORTER_VERSION}.redhat-${RH_PROMETHEUS_JMX_EXPORTER_PATCH_VERSION}
-ENV RH_PROMETHEUS_JMX_EXPORTER_BREW_DIR ${PROMETHEUS_JMX_EXPORTER_VERSION}.redhat_${RH_PROMETHEUS_JMX_EXPORTER_PATCH_VERSION}
 ENV PROMETHEUS_JMX_EXPORTER_OUT /build/jmx_prometheus_javaagent.jar
-ARG PROMETHEUS_JMX_EXPORTER_URL=http://download.eng.bos.redhat.com/brewroot/packages/io.prometheus.jmx-parent/${RH_PROMETHEUS_JMX_EXPORTER_BREW_DIR}/1/maven/io/prometheus/jmx/jmx_prometheus_javaagent/${RH_PROMETHEUS_JMX_EXPORTER_VERSION}/jmx_prometheus_javaagent-${RH_PROMETHEUS_JMX_EXPORTER_VERSION}.jar
+ARG PROMETHEUS_JMX_EXPORTER_URL=$MAVEN_REPO_URL/io/prometheus/jmx/jmx_prometheus_javaagent/${RH_PROMETHEUS_JMX_EXPORTER_VERSION}/jmx_prometheus_javaagent-${RH_PROMETHEUS_JMX_EXPORTER_VERSION}.jar
 
 RUN set -x; curl -fSLs \
     $PROMETHEUS_JMX_EXPORTER_URL \

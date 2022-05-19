@@ -1,0 +1,11 @@
+- nvr: io.prestosql-presto-root-315.0.0.redhat_00003-1
+  archives:
+  - filename: presto-cli-315.0.0.redhat-00003-executable.jar
+    group_id: io.prestosql
+  - filename: presto-server-315.0.0.redhat-00003.tar.gz
+    group_id: io.prestosql
+- nvr: io.prometheus.jmx-parent-0.3.1.redhat_00006-1
+  archives:
+  - filename: jmx_prometheus_javaagent-0.3.1.redhat-00006.jar
+    group_id: io.prometheus.jmx
+
